@@ -1,5 +1,3 @@
-Chow Cheuk Wai (210422222) 1A
-
 Public Class frmAssignment
     'The product price, discount etc.
     Const APPLE_PRICE As Double = 10.0
