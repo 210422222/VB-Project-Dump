@@ -37,7 +37,6 @@ Public Class frmAssignment
     End Sub
 
     Private Sub BtnConfirm_Click(sender As Object, e As EventArgs) Handles btnConfirm.Click
-
         'Confirm order and store the data in customer history
         'part b
         If txtCustomerName.Text.Trim = "" Then
@@ -73,6 +72,8 @@ Public Class frmAssignment
             tunacount += nudQty.Value
         End If
 
+
+
         If rbnGW.Checked Then
             SubTotal += WHEAT_PRICE
             wheatcount += nudQty.Value
@@ -89,10 +90,15 @@ Public Class frmAssignment
             SubTotal = SubTotal * (1 - DISCOUNT_RATE)
         End If
 
+
+
+
+
         'part c
         NoOfOrder += 1
         salestotal += SubTotal
         txtOrderAmount.Text = FormatCurrency(SubTotal, 2)
+
         ' checks if this order (subtotal) is larger than previous max...
         'if yes, maxsales is this order
 
@@ -107,10 +113,24 @@ Public Class frmAssignment
         txtNumberSales.Text = NoOfOrder
         txtTotalSales.Text = FormatCurrency(salestotal, 2)
 
+
+
+
+
+
+
+
+
+
+
+
+
     End Sub
 
-    Private Sub BtnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
 
+
+
+    Private Sub BtnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
         'Only reset the group-box "Current Order Information"
         chkApple.Checked = False
         chkLettuce.Checked = False
@@ -123,13 +143,12 @@ Public Class frmAssignment
         nudQty.Value = nudQty.Minimum
         txtOrderAmount.Text = " "
         lstCustHis.Items.Clear()
-
     End Sub
 
     Private Sub BtnClearAccu_Click(sender As Object, e As EventArgs) Handles btnClearAccu.Click
-
         'Only reset the accumulated sales
         Dim ResponseDialogResult As DialogResult
+
         ResponseDialogResult = MessageBox.Show("Do you want to clear all values?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
 
         If ResponseDialogResult = DialogResult.OK Then
@@ -144,54 +163,61 @@ Public Class frmAssignment
             tunacount = 0
         End If
 
+
+
+
     End Sub
 
     Private Sub Btnpopular_Click(sender As Object, e As EventArgs) Handles btnpopular.Click
-
         Dim max As Integer = 0
         Dim maxingredient As String = "nothing"
         If applecount > max Then
+            max = applecount
             maxingredient = "apple"
         End If
         If lettucecount > max Then
+            max = lettucecount
             maxingredient = "lettuce"
         End If
         If tomatocount > max Then
+            max = tomatocount
             maxingredient = "tomato"
         End If
         If hamcount > max Then
+            max = hamcount
             maxingredient = "ham"
         End If
         If tunacount > max Then
+            max = tunacount
             maxingredient = "tuna"
         End If
 
-        If max = 0 Then
+        If (max > 0) Then
             MessageBox.Show("The most popular ingredient is: " & maxingredient)
         Else
             MessageBox.Show("The most popular ingredient is: ", "Nothing")
+
         End If
         Return
-
     End Sub
 
-    Private Sub BtnFind_Click(sender As Object, e As EventArgs) Handles btnFind.Click
 
+    Private Sub BtnFind_Click(sender As Object, e As EventArgs) Handles btnFind.Click
         For i = 0 To lstCustHis.Items.Count - 1
             If txtFindCustomer.Text.Trim = lstCustHis.Items(i) Then
+
 
                 ' remember we count from 0 as computer
                 ' but count from 1 as human, use i+1 in messagebox
                 If txtCustomerName.Text = " " Then
                     lstCustHis.SelectedIndex = -1
                 End If
-        MessageBox.Show("Found customer: " & txtCustomerName.Text & " As" & " Customer Number: " & i + 1)
+                MessageBox.Show("Found customer: " & txtCustomerName.Text & " As" & " Customer Number: " & i + 1)
                 Return
             End If
         Next
         ' arrive here if customer not found
         MessageBox.Show("Customer not found", "Whoops!")
-
     End Sub
 
 End Class
