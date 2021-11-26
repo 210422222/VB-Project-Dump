@@ -192,11 +192,10 @@ Public Class frmAssignment
             maxingredient = "tuna"
         End If
 
-        If (max > 0) Then
+        If (max = 0) Then
+            MessageBox.Show("The most popular ingredient is: " & "Nothing")
+        ElseIf (max > 0) Then
             MessageBox.Show("The most popular ingredient is: " & maxingredient)
-        Else
-            MessageBox.Show("The most popular ingredient is: ", "Nothing")
-
         End If
         Return
     End Sub
