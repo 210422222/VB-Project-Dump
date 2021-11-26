@@ -1,0 +1,199 @@
+Chow Cheuk Wai (210422222) 1A
+
+Public Class frmAssignment
+    'The product price, discount etc.
+    Const APPLE_PRICE As Double = 10.0
+    Const LETTUCE_PRICE As Double = 12.5
+    Const TOMATO_PRICE As Double = 8.5
+    Const HAM_PRICE As Double = 20.0
+    Const TUNA_PRICE As Double = 18.5
+
+    Const WHEAT_PRICE As Double = 8.0
+    Const HONEYOAT_PRICE As Double = 10.5
+
+    Const DISCOUNT_RATE As Double = 0.1
+    Const DISCOUNT_START As Double = 100.0
+
+    Dim salestotal As Double = 0
+    Dim maxsales As Double = 0
+    Dim NoOfOrder As Integer = 0
+
+    Dim applecount As Integer = 0
+    Dim lettucecount As Integer = 0
+    Dim tomatocount As Integer = 0
+    Dim hamcount As Integer = 0
+    Dim tunacount As Integer = 0
+    Dim wheatcount As Integer = 0
+    Dim honeyoatcount As Integer = 0
+
+    Private Sub FrmAssignment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        chkApple.Text = chkApple.Text & " " & FormatCurrency(APPLE_PRICE, 2)
+        chkLettuce.Text = chkLettuce.Text & " " & FormatCurrency(LETTUCE_PRICE, 2)
+        chkTomato.Text = chkTomato.Text & " " & FormatCurrency(TOMATO_PRICE, 2)
+        chkHam.Text = chkHam.Text & " " & FormatCurrency(HAM_PRICE, 2)
+        chkTuna.Text = chkTuna.Text & " " & FormatCurrency(TUNA_PRICE, 2)
+        rbnGW.Text = rbnGW.Text & " " & FormatCurrency(WHEAT_PRICE, 2)
+        rbnHO.Text = rbnHO.Text & " " & FormatCurrency(HONEYOAT_PRICE, 2)
+
+    End Sub
+
+    Private Sub BtnConfirm_Click(sender As Object, e As EventArgs) Handles btnConfirm.Click
+
+        'Confirm order and store the data in customer history
+        'part b
+        If txtCustomerName.Text.Trim = "" Then
+            MessageBox.Show("No Name!", "Warning")
+            Return
+        End If
+        If Not rbnGW.Checked And Not rbnHO.Checked Then
+            MessageBox.Show("Please select the bread.", "Warning")
+            Return
+        End If
+        lstCustHis.Items.Add(txtCustomerName.Text)
+        lstCustHis.SetSelected(lstCustHis.Items.Count - 1, True)
+
+        Dim SubTotal As Double
+        If chkApple.Checked = True Then
+            SubTotal += APPLE_PRICE
+            applecount += nudQty.Value
+        End If
+        If chklettuce.Checked = True Then
+            SubTotal += LETTUCE_PRICE
+            lettucecount += nudQty.Value
+        End If
+        If chkTomato.Checked = True Then
+            SubTotal += TOMATO_PRICE
+            tomatocount += nudQty.Value
+        End If
+        If chkHam.Checked = True Then
+            SubTotal += HAM_PRICE
+            hamcount += nudQty.Value
+        End If
+        If chkTuna.Checked = True Then
+            SubTotal += TUNA_PRICE
+            tunacount += nudQty.Value
+        End If
+
+        If rbnGW.Checked Then
+            SubTotal += WHEAT_PRICE
+            wheatcount += nudQty.Value
+        ElseIf rbnHO.Checked Then
+            SubTotal += HONEYOAT_PRICE
+            honeyoatcount += nudQty.Value
+        Else
+
+        End If
+
+        SubTotal *= nudQty.Value
+
+        If SubTotal >= DISCOUNT_START Then
+            SubTotal = SubTotal * (1 - DISCOUNT_RATE)
+        End If
+
+        'part c
+        NoOfOrder += 1
+        salestotal += SubTotal
+        txtOrderAmount.Text = FormatCurrency(SubTotal, 2)
+        ' checks if this order (subtotal) is larger than previous max...
+        'if yes, maxsales is this order
+
+        If SubTotal > maxsales = True Then
+            txtLargestSales.Text = SubTotal
+        End If
+
+        'average of sales
+        txtAverageSales.Text = (salestotal / NoOfOrder)
+
+        'number of sales
+        txtNumberSales.Text = NoOfOrder
+        txtTotalSales.Text = FormatCurrency(salestotal, 2)
+
+    End Sub
+
+    Private Sub BtnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
+
+        'Only reset the group-box "Current Order Information"
+        chkApple.Checked = False
+        chkLettuce.Checked = False
+        chkTomato.Checked = False
+        chkHam.Checked = False
+        chkTuna.Checked = False
+        rbnGW.Checked = False
+        rbnHO.Checked = False
+        txtCustomerName.Text = " "
+        nudQty.Value = nudQty.Minimum
+        txtOrderAmount.Text = " "
+        lstCustHis.Items.Clear()
+
+    End Sub
+
+    Private Sub BtnClearAccu_Click(sender As Object, e As EventArgs) Handles btnClearAccu.Click
+
+        'Only reset the accumulated sales
+        Dim ResponseDialogResult As DialogResult
+        ResponseDialogResult = MessageBox.Show("Do you want to clear all values?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
+
+        If ResponseDialogResult = DialogResult.OK Then
+            txtNumberSales.Clear()
+            txtLargestSales.Clear()
+            txtTotalSales.Clear()
+            txtAverageSales.Clear()
+            applecount = 0
+            lettucecount = 0
+            tomatocount = 0
+            hamcount = 0
+            tunacount = 0
+        End If
+
+    End Sub
+
+    Private Sub Btnpopular_Click(sender As Object, e As EventArgs) Handles btnpopular.Click
+
+        Dim max As Integer = 0
+        Dim maxingredient As String = "nothing"
+        If applecount > max Then
+            maxingredient = "apple"
+        End If
+        If lettucecount > max Then
+            maxingredient = "lettuce"
+        End If
+        If tomatocount > max Then
+            maxingredient = "tomato"
+        End If
+        If hamcount > max Then
+            maxingredient = "ham"
+        End If
+        If tunacount > max Then
+            maxingredient = "tuna"
+        End If
+
+        If max = 0 Then
+            MessageBox.Show("The most popular ingredient is: " & maxingredient)
+        Else
+            MessageBox.Show("The most popular ingredient is: ", "Nothing")
+        End If
+        Return
+
+    End Sub
+
+    Private Sub BtnFind_Click(sender As Object, e As EventArgs) Handles btnFind.Click
+
+        For i = 0 To lstCustHis.Items.Count - 1
+            If txtFindCustomer.Text.Trim = lstCustHis.Items(i) Then
+
+                ' remember we count from 0 as computer
+                ' but count from 1 as human, use i+1 in messagebox
+                If txtCustomerName.Text = " " Then
+                    lstCustHis.SelectedIndex = -1
+                End If
+        MessageBox.Show("Found customer: " & txtCustomerName.Text & " As" & " Customer Number: " & i + 1)
+                Return
+            End If
+        Next
+        ' arrive here if customer not found
+        MessageBox.Show("Customer not found", "Whoops!")
+
+    End Sub
+
+End Class
